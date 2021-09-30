@@ -12,6 +12,8 @@ class Game {
         this.setCanvas();
         this.setBoard();
         this.chipState = this.black;
+        this.blackScore = 0;
+        this.whiteScore = 0;
     }
 
     setBoard() {
@@ -35,6 +37,25 @@ class Game {
     setCanvas() {
         this.canvas.width = this.size * 56;
         this.canvas.height = this.size * 56;
+    }
+
+    score(){
+        this.blackScore = 0;
+        this.whiteScore = 0;
+        this.board.forEach((row) => {
+            row.forEach((col) => {
+                if (col == this.black) this.blackScore += 1;
+                else if (col == this.white) this.whiteScore += 1;
+            });
+        });
+    }
+
+    winner(el){
+        let winner = '';
+        if (this.blackScore < this.whiteScore) winner = 'White Win';
+        else if(this.blackScore > this.whiteScore) winner = 'Black Win';
+        else winner = 'Draw';
+        el.innerHTML = winner;
     }
 }
 

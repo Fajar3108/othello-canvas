@@ -18,12 +18,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const board = new Board(canvas, ctx, game);
     const chip = new Chip(canvas, ctx, game);
     const explorable = new Explorable(canvas, ctx, game);
+
+    // Score
+    const blackScore = document.querySelector('#blackScore');
+    const whiteScore = document.querySelector('#whiteScore');
+
+    // Winner
+    const winner = document.querySelector('#winner');
     
     // Init
     board.draw();
     chip.draw();
     explorable.draw();
     textState.innerHTML = game.chipState == game.black ? "Black" : "White";
+    winner.innerHTML = '';
 
     canvas.addEventListener('click', (e) => {
         // Get Array Index Location
@@ -35,8 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             board.draw();
             chip.clicked(x, y);
+            game.score();
+            blackScore.innerHTML = `Black : ${game.blackScore}`;
+            whiteScore.innerHTML = `White : ${game.whiteScore}`;
             explorable.draw();
             textState.innerHTML = game.chipState == game.black ? "Black" : "White";
+            if (explorable.explorable.length <= 0) {
+                game.winner(winner);
+                textState.innerHTML = '';
+            }
         }
     });
 });
